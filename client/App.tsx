@@ -22,7 +22,7 @@ function App(): React.JSX.Element {
           <Stack.Screen
           name="Home"
           component={Home}
-          options={{title: 'PocketFish'}} />
+          options={{title: 'PocketFish', statusBarColor: '#79A449', navigationBarColor: '#79A449'}} />
         </Stack.Navigator>
     </NavigationContainer>
   );

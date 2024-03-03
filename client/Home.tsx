@@ -135,11 +135,11 @@ const Home = () =>  {
         },
       ]}>
        <View style={{flex: 1, alignItems: 'center'}}>
-         <Button title = "Upload Photo" onPress = {() => {launchImageLibrary({mediaType: "photo"})}}/>
+         <Button color="#79A449" title = "Upload Photo" onPress = {() => {launchImageLibrary({mediaType: "photo"})}}/>
        </View>
 
          <View style={{flex: 1, alignItems: 'center'}}>
-          <Button title = "Take Photo" onPress = {requestCameraPermission}/>
+          <Button color="#79A449" title = "Take Photo" onPress = {requestCameraPermission}/>
          </View>
 
        </View>
