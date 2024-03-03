@@ -12,6 +12,9 @@ import {
     Colors,
   } from 'react-native/Libraries/NewAppScreen';
 
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+
+
   type SectionProps = PropsWithChildren<{
     title: string;
   }>;
@@ -24,7 +27,7 @@ import {
           style={[
             styles.sectionTitle,
             {
-              color: isDarkMode ? Colors.white : Colors.black,
+                color: Colors.dark,
             },
           ]}>
           {title}
@@ -33,7 +36,7 @@ import {
           style={[
             styles.sectionDescription,
             {
-              color: isDarkMode ? Colors.light : Colors.dark,
+              color: Colors.dark,
             },
           ]}>
           {children}
@@ -66,7 +69,7 @@ import {
 const Home = () =>  {
     return(
   <Section title = "Upload Photo">
-      <Button title = "abweanws" onPress = {() => {console.log("plox")}}/>
+      <Button title = "abweanws" onPress = {() => {launchCamera({mediaType: "photo", cameraType:"front"})}}/>
   </Section>
     );
 };
