@@ -16,6 +16,8 @@ import {
 
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
+import { post } from "../utilities"
+
 
   type SectionProps = PropsWithChildren<{
     title: string;
@@ -23,6 +25,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
   
   function Section({children, title}: SectionProps): React.JSX.Element {
     const isDarkMode = useColorScheme() === 'dark';
+
     return (
       <View style={styles.sectionContainer}>
         <Text
@@ -71,8 +74,14 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
       padding: 20,
     },
   });
+
+  const getEvaluation = async (imageString) => {
+    var evaluation = post("http://10.29.161.50:5000/upload", {imageString: imageString}).then((res) => (res.evaluation))
+    return evaluation
+  }
     
   const requestCameraPermission = async () => {
+    
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -87,7 +96,11 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        launchCamera({mediaType: "photo", cameraType:"front"})
+        launchCamera({mediaType: "photo", cameraType:"front", includeBase64: true}, (response) => {
+          if (response.assets) {
+            getEvaluation(response.assets[0].base64)
+          }
+        });
       } else {
         showCameraDeniedTost();
       }
@@ -95,6 +108,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
       console.warn(err);
     }
   };
+
 
   const showCameraDeniedTost = () => {
     ToastAndroid.showWithGravity(
