@@ -1,6 +1,8 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+    ToastAndroid,
+    PermissionsAndroid,  
     StyleSheet,
     Text,
     useColorScheme,
@@ -54,6 +56,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
     sectionTitle: {
       fontSize: 24,
       fontWeight: '600',
+      textAlign: 'center',
     },
     sectionDescription: {
       marginTop: 8,
@@ -63,18 +66,68 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
     highlight: {
       fontWeight: '700',
     },
+    container: {
+      flex: 1,
+      padding: 20,
+    },
   });
+    
+  const requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'Grant Camera Permissions',
+          message:
+            'Please grant camera access ' +
+            'for Pocketfish to take pictures.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        launchCamera({mediaType: "photo", cameraType:"front"})
+      } else {
+        showCameraDeniedTost();
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
 
-async function startCamera() {
-    console.log("trying to start camera");
-    const result = await launchImageLibrary({mediaType: "photo"});
-}
+  const showCameraDeniedTost = () => {
+    ToastAndroid.showWithGravity(
+      'Camera Permissions Denied',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+  };
+
 
 const Home = () =>  {
     return(
-  <Section title = "Upload Photo">
-      <Button title = "abweanws" onPress = {startCamera}/>
-  </Section>
+  <>
+   <View
+      style={[
+        styles.container,
+        {
+          flexDirection: 'row',
+        },
+      ]}>
+      <View style={{flex: 1, alignItems: 'center'}}>
+       <Section title = "Upload a Photo">
+       <Button title = "abweanws" onPress = {() => {launchImageLibrary({mediaType: "photo"})}}/>
+        </Section>
+      </View>
+      <View style={{flex: 1, alignItems: 'center'}}>
+        <Section title = "Take a Photo">
+        <Button title = "swnaewba" onPress = {requestCameraPermission}/>
+         </Section>
+      </View>
+    </View>
+  
+  </>
     );
 };
 
