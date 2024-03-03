@@ -69,7 +69,11 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
       padding: 20,
     },
   });
-    
+
+async function startCamera() {
+    console.log("trying to start camera");
+    const result = await launchImageLibrary({mediaType: "photo"});
+}
 
 const Home = () =>  {
     return(
