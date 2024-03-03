@@ -1,6 +1,7 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+    PermissionsAndroid,  
     StyleSheet,
     Text,
     useColorScheme,
@@ -69,11 +70,33 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
       padding: 20,
     },
   });
+    
+  const requestCameraPermission = async () => {
+    console.log('Camera permission denied')
 
-async function startCamera() {
-    console.log("trying to start camera");
-    const result = await launchImageLibrary({mediaType: "photo"});
-}
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'Cool Photo App Camera Permission',
+          message:
+            'Cool Photo App needs access to your camera ' +
+            'so you can take awesome pictures.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        launchCamera({mediaType: "photo", cameraType:"front"})
+      } else {
+        console.log('Camera permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
 
 const Home = () =>  {
     return(
@@ -92,7 +115,7 @@ const Home = () =>  {
       </View>
       <View style={{flex: 1, alignItems: 'center'}}>
         <Section title = "Take a Photo">
-        <Button title = "swnaewba" onPress = {() => {launchCamera({mediaType: "photo", cameraType:"front"})}}/>
+        <Button title = "swnaewba" onPress = {() => {requestCameraPermission}}/>
          </Section>
       </View>
     </View>
