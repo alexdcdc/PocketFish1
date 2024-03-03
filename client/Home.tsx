@@ -1,13 +1,16 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
+import {useState} from 'react';
 import {
+
     ToastAndroid,
     PermissionsAndroid,  
     StyleSheet,
     Text,
     useColorScheme,
     View,
-    Button
+    Button,
+    Image,
   } from 'react-native';
 
   import {
@@ -37,41 +40,40 @@ import { post } from "../utilities"
           ]}>
           {title}
         </Text>
-        <Text
-          style={[
-            styles.sectionDescription,
-            {
-              color: Colors.dark,
-            },
-          ]}>
-          {children}
-        </Text>
       </View>
     );
   }
 
   const styles = StyleSheet.create({
     sectionContainer: {
-      marginTop: 32,
+      marginTop: 15,
       paddingHorizontal: 24,
       alignContent: "center"
     },
     sectionTitle: {
-      fontSize: 24,
+      fontSize: 20,
       fontWeight: '600',
       textAlign: 'center',
-    },
-    sectionDescription: {
-      marginTop: 8,
-      fontSize: 18,
-      fontWeight: '400',
     },
     highlight: {
       fontWeight: '700',
     },
     container: {
       flex: 1,
-      padding: 20,
+      padding: 10,
+    },
+    rectangle: {
+      width: 25, 
+      height: '75%', 
+      backgroundColor: 'white',
+      borderRadius: 5,
+      borderWidth: 1,
+      borderColor: 'gray',
+      overflow: 'hidden',
+    },
+    coloredPortion: {
+      width: '100%',
+      backgroundColor: 'black', 
     },
   });
 
@@ -120,64 +122,72 @@ import { post } from "../utilities"
 
 
 const Home = () =>  {
+
+  //TODO TEMP VALUES HERE
+  const [coloredPercentage, setColoredPercentage] = useState(50);
+
     return(
   <>
-   <View
+  <View
+      style={[
+        styles.container,
+        {
+          flexDirection: 'column',
+        },
+      ]}>
+    <View style={{flex: 0.5, alignItems: 'center'}}>
+      <Section title = "Select Image:"/>
+   </View>
+
+   <View style={{flex: 1, alignItems: 'center'}}>
+    
+    <View
       style={[
         styles.container,
         {
           flexDirection: 'row',
         },
       ]}>
-      <View style={{flex: 1, alignItems: 'center'}}>
-       <Section title = "Upload a Photo">
-       <Button title = "abweanws" onPress = {() => {launchImageLibrary({mediaType: "photo"})}}/>
-        </Section>
-      </View>
-      <View style={{flex: 1, alignItems: 'center'}}>
-        <Section title = "Take a Photo">
-        <Button title = "swnaewba" onPress = {requestCameraPermission}/>
-         </Section>
+       <View style={{flex: 1, alignItems: 'center'}}>
+         <Button color="#79A449" title = "Upload Photo" onPress = {() => {launchImageLibrary({mediaType: "photo"})}}/>
+       </View>
+
+         <View style={{flex: 1, alignItems: 'center'}}>
+          <Button color="#79A449" title = "Take Photo" onPress = {requestCameraPermission}/>
+         </View>
+
+       </View>
+    </View>
+
+    <View style={{flex: 3, alignItems: 'center'}}>
+      <View
+        style={[
+          styles.container,
+          {
+            flexDirection: 'row',
+          },
+        ]}>
+        <View style={{flex: 1, alignItems: 'center'}}>
+          <View style={styles.rectangle}>
+            <View style={[styles.coloredPortion, { height: `${coloredPercentage}%` }]} />
+          </View>
+        </View>
+
+        <View style={{flex: 5, alignItems: 'center'}}>
+        <Image source={require('../images/chess.png')} style={{height: '75%', aspectRatio: 1, alignItems: 'center'}}/>
+        </View>
       </View>
     </View>
-  
+
+    <View style={{flex: 2, alignItems: 'center'}}>
+      <Section title="Suggested Next Moves">
+          {/**TODO: NEXT BEST MOVES*/}
+      </Section>
+    </View>
+
+  </View>
   </>
     );
 };
 
 export default Home;
-
-/** 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-    );
-    */
