@@ -115,7 +115,7 @@ const Home = () =>  {
       </View>
       <View style={{flex: 1, alignItems: 'center'}}>
         <Section title = "Take a Photo">
-        <Button title = "swnaewba" onPress = {() => {requestCameraPermission}}/>
+        <Button title = "swnaewba" onPress = {requestCameraPermission}/>
          </Section>
       </View>
     </View>
