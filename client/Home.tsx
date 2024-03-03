@@ -54,6 +54,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
     sectionTitle: {
       fontSize: 24,
       fontWeight: '600',
+      textAlign: 'center',
     },
     sectionDescription: {
       marginTop: 8,
@@ -63,14 +64,36 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
     highlight: {
       fontWeight: '700',
     },
+    container: {
+      flex: 1,
+      padding: 20,
+    },
   });
     
 
 const Home = () =>  {
     return(
-  <Section title = "Upload Photo">
-      <Button title = "abweanws" onPress = {() => {launchCamera({mediaType: "photo", cameraType:"front"})}}/>
-  </Section>
+  <>
+   <View
+      style={[
+        styles.container,
+        {
+          flexDirection: 'row',
+        },
+      ]}>
+      <View style={{flex: 1, alignItems: 'center'}}>
+       <Section title = "Upload a Photo">
+       <Button title = "abweanws" onPress = {() => {launchImageLibrary({mediaType: "photo"})}}/>
+        </Section>
+      </View>
+      <View style={{flex: 1, alignItems: 'center'}}>
+        <Section title = "Take a Photo">
+        <Button title = "swnaewba" onPress = {() => {launchCamera({mediaType: "photo", cameraType:"front"})}}/>
+         </Section>
+      </View>
+    </View>
+  
+  </>
     );
 };
 
