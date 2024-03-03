@@ -1,6 +1,7 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+    ToastAndroid,
     PermissionsAndroid,  
     StyleSheet,
     Text,
@@ -72,16 +73,14 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
   });
     
   const requestCameraPermission = async () => {
-    console.log('Camera permission denied')
-
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.CAMERA,
         {
-          title: 'Cool Photo App Camera Permission',
+          title: 'Grant Camera Permissions',
           message:
-            'Cool Photo App needs access to your camera ' +
-            'so you can take awesome pictures.',
+            'Please grant camera access ' +
+            'for Pocketfish to take pictures.',
           buttonNeutral: 'Ask Me Later',
           buttonNegative: 'Cancel',
           buttonPositive: 'OK',
@@ -90,11 +89,19 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         launchCamera({mediaType: "photo", cameraType:"front"})
       } else {
-        console.log('Camera permission denied');
+        showCameraDeniedTost();
       }
     } catch (err) {
       console.warn(err);
     }
+  };
+
+  const showCameraDeniedTost = () => {
+    ToastAndroid.showWithGravity(
+      'Camera Permissions Denied',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
   };
 
 
