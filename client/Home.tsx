@@ -64,12 +64,16 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
       fontWeight: '700',
     },
   });
-    
+
+async function startCamera() {
+    console.log("trying to start camera");
+    const result = await launchImageLibrary({mediaType: "photo"});
+}
 
 const Home = () =>  {
     return(
   <Section title = "Upload Photo">
-      <Button title = "abweanws" onPress = {() => {launchCamera({mediaType: "photo", cameraType:"front"})}}/>
+      <Button title = "abweanws" onPress = {startCamera}/>
   </Section>
     );
 };
