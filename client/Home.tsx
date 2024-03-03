@@ -78,12 +78,22 @@ import { post } from "../utilities"
   });
 
   const getEvaluation = async (imageString) => {
-    var evaluation = post("http://10.29.161.50:5000/upload", {imageString: imageString}).then((res) => (res.evaluation))
-    return evaluation
+    var res = post("http://10.29.161.50:5000/upload", {imageString: imageString}).then((res) => (res.evaluation))
+    console.log(res["evaluation"]);
+    return res["evaluation"]
+  }
+
+  const getImageFromLibrary = async () => {
+
+    launchImageLibrary({mediaType: "photo", includeBase64: true}, (response) => {
+      if (response.assets) {
+        return getEvaluation(response.assets[0].base64)
+      }
+      return null;
+    })
   }
     
   const requestCameraPermission = async () => {
-    
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -125,6 +135,7 @@ const Home = () =>  {
 
   //TODO TEMP VALUES HERE
   const [coloredPercentage, setColoredPercentage] = useState(50);
+  const [evalNum, setEvalNum] = useState("0");
 
     return(
   <>
@@ -149,11 +160,11 @@ const Home = () =>  {
         },
       ]}>
        <View style={{flex: 1, alignItems: 'center'}}>
-         <Button color="#79A449" title = "Upload Photo" onPress = {() => {launchImageLibrary({mediaType: "photo"})}}/>
+         <Button color="#79A449" title = "Upload Photo" onPress = {() => (getImageFromLibrary())}/>
        </View>
 
          <View style={{flex: 1, alignItems: 'center'}}>
-          <Button color="#79A449" title = "Take Photo" onPress = {requestCameraPermission}/>
+          <Button color="#79A449" title = "Take Photo" onPress = {() => (requestCameraPermission())}/>
          </View>
 
        </View>
@@ -180,8 +191,8 @@ const Home = () =>  {
     </View>
 
     <View style={{flex: 2, alignItems: 'center'}}>
-      <Section title="Suggested Next Moves">
-          {/**TODO: NEXT BEST MOVES*/}
+      <Section title={ evalNum }>
+          
       </Section>
     </View>
 

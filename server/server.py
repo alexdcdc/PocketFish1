@@ -8,12 +8,6 @@ app = Flask(__name__)
 def hello():
     return 'Chess ID. usage: /upload'
 
-ALLOWED_EXTENSIONS = set(['jpg', 'jpeg', 'JPG', 'JPEG'])
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
@@ -23,6 +17,7 @@ def upload_file():
             fh.write(base64.b64decode(imageString))
         
         return {"hotel?": "trivago"}
+    
     return '''
     <!doctype html>
     <title>Chess ID</title>
